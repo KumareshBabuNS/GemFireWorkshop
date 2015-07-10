@@ -21,7 +21,7 @@ public class QueryEmployees
     public QueryEmployees()
     {
         ClientCacheFactory ccf = new ClientCacheFactory();
-        ccf.set("cache-xml-file", "query-client.xml");
+        ccf.set("cache-xml-file", "config/query-client.xml");
         cache = ccf.create();
     }
 
