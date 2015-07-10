@@ -1,0 +1,1944 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1347\cocoasubrtf570
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;\f2\fnil\fcharset0 LucidaGrande;
+\f3\fmodern\fcharset0 Courier;\f4\fnil\fcharset0 EuphemiaUCAS;\f5\fmodern\fcharset0 Courier-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red24\green55\blue106;\red255\green255\blue200;
+\red151\green0\blue126;\red13\green26\blue47;\red109\green109\blue109;\red194\green255\blue255;\red39\green73\blue255;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+{\info
+{\title Pivotal GemFire 8 Workshop}}\paperw12240\paperh15840\vieww24820\viewh12900\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 \'91
+\f1\b\fs64 Pivotal GemFire - DSTA\
+\pard\pardeftab720
+
+\b0\fs26 \cf2 \ul \ulc2 Carlos Queiroz\cf0 \ulnone \uc0\u8232 \u8232 \
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 Contents\
+\pard\pardeftab720
+
+\b0\fs30 \cf0 1. \cf2 \ul Getting Started
+\fs26 \cf0 \ulnone \
+
+\fs30 1.1. \cf2 \ul Prerequisites \cf0 \ulnone \uc0\u8232 1.2. \cf2 \ul Installing GemFire\cf0 \ulnone \uc0\u8232 1.3. \cf2 \ul Setting Up Your Environment
+\fs26 \cf0 \ulnone \
+
+\fs30 2. \cf2 \ul Start GemFire Cluster\cf0 \ulnone \uc0\u8232 3. \cf2 \ul Add Data Using GFSH\cf0 \ulnone \uc0\u8232 4. \cf2 \ul Create A New Region\cf0 \ulnone \uc0\u8232 5. \cf2 \ul Deploy A New JAR File into the Cluster\cf0 \ulnone \uc0\u8232 6. \cf2 \ul Bulk Insert Domain Model Objects into GemFire\cf0 \ulnone \uc0\u8232 7. \cf2 \ul Querying
+\fs26 \cf0 \ulnone \
+
+\fs30 7.1. \cf2 \ul Querying data from a Java Client using OQL\cf0 \ulnone \uc0\u8232 7.2. \cf2 \ul Querying all region data\cf0 \ulnone \uc0\u8232 7.3. \cf2 \ul Querying a Region by key\cf0 \ulnone \uc0\u8232 7.4. \cf2 \ul Querying using Spring Data GemFire\cf0 \ulnone \uc0\u8232 7.5. \cf2 \ul Query with GFSH
+\fs26 \cf0 \ulnone \
+
+\fs30 8. \cf2 \ul Start Pulse (Monitoring Web Console)\cf0 \ulnone \uc0\u8232 9. \cf2 \ul Start JConsole (Graphical Monitoring Tool for Java)\cf0 \ulnone \uc0\u8232 10. \cf2 \ul Create an Index\cf0 \ulnone \uc0\u8232 11. \cf2 \ul Functions
+\fs26 \cf0 \ulnone \
+
+\fs30 11.1. \cf2 \ul Creating the function\cf0 \ulnone \uc0\u8232 11.2. \cf2 \ul Deploying to the GemFire Distributed system\cf0 \ulnone \uc0\u8232 11.3. \cf2 \ul Executing the function from a client
+\fs26 \cf0 \ulnone \
+
+\fs30 12. \cf2 \ul Verify Data Member Locations\cf0 \ulnone \uc0\u8232 13. \cf2 \ul Add a New Member\cf0 \ulnone \uc0\u8232 14. \cf2 \ul Shut down the cluster\cf0 \ulnone \uc0\u8232 15. \cf2 \ul Asyncronous Event Listener (Write Behind)
+\fs26 \cf0 \ulnone \
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 Introduction\
+\pard\pardeftab720\sa398
+
+\b0\fs30 \cf0 Pivotal GemFire is a distributed data management system providing dynamic scalability, high performance and persistence. It blends advanced techniques like replication, partitioning, data-aware routing and continuous querying.
+\b\fs36 \uc0\u8232 
+\fs48 \
+\pard\pardeftab720
+
+\b0\fs26 \cf0 \'a0
+\f0\fs24 {{\NeXTGraphic Pasted Graphic.tiff \width14840 \height6460
+}¬}
+\f1\fs26 \
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 1. Getting Started\
+\pard\pardeftab720\sa360
+
+\fs36 \cf0 1.1 Prerequisites\
+\pard\pardeftab720\sa320
+
+\b0\fs32 \cf0 1.1.1 Install a Java IDE to use as we will run as clients from an IDE. The examples here use {\field{\*\fldinst{HYPERLINK "https://spring.io/tools/sts"}}{\fldrslt \cf2 \ul STS}}, Spring Tool Suite, BUT you could easily use Eclipse or other IDE.
+\fs26 \
+
+\fs32 1.1.2 Install JDK 1.8 on your file system. The demos are built using JDK 1.8. GemFire requires the JDK (and not just a JRE) to run gfsh commands)
+\fs26 \
+\pard\pardeftab720
+\cf0 \'a0\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth11800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs30 \cf3 \uc0\u955 
+\f3  ~/Dev/Pivotal/DSTA-Workshop/labs/gemfire 
+\f4 \uc0\u5125 
+\f3  java -version
+\f1\fs26 \cf0 \
+
+\f3\fs30 \cf3 java version "1.8.0_31"\
+Java(TM) SE Runtime Environment (build 1.8.0_31-b13)\
+Java HotSpot(TM) 64-Bit Server VM (build 25.31-b07, mixed mode)\
+
+\f2 \uc0\u955 
+\f3  ~/Dev/Pivotal/DSTA-Workshop/labs/gemfire 
+\f4 \uc0\u5125 
+\f1\fs26 \cf0 \
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf0 \'a0
+\f1\fs26 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+\pard\pardeftab720
+
+\fs34 \cf0 1.1.3.\'a0\'a0 This workshop below is isolated to a single computer for simplicity. We use localhost when connecting to GemFire in this workshop.\'a0\uc0\u8232 \u8232 
+\fs26 \
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 1.2. Installing GemFire\
+\pard\pardeftab720
+
+\b0\fs32 \cf0 1.2.1. Download GemFire. This workshop uses GemFire 8.1.0 from {\field{\*\fldinst{HYPERLINK "https://network.pivotal.io/products/pivotal-gemfire"}}{\fldrslt \cf2 \ul Pivotal Downloads}}\uc0\u8232 \u8232 1.2.2. Unzip it to install it and it should look as follows
+\fs26 \
+\'a0\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth11800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f2\fs30 \cf3 [pivotal@localhost Pivotal_GemFire_810]$ ls -la\
+total 44\
+drwxrwxr-x 11 pivotal pivotal 4096 May 14 16:14 .\
+drwxrwxr-x  6 pivotal pivotal 4096 May 19 18:22 ..\
+drwxr-xr-x  2 pivotal pivotal 4096 Jan 16 16:32 bin\
+drwxr-xr-x  2 pivotal pivotal 4096 Jan 16 16:32 defaultConfigs\
+drwxrwxr-x  3 pivotal pivotal 4096 May 14 16:14 docs\
+drwxr-xr-x  2 pivotal pivotal 4096 Jan 16 16:32 dtd\
+drwxr-xr-x  2 pivotal pivotal 4096 Jan 16 16:32 lib\
+drwxrwxr-x  6 pivotal pivotal 4096 May 14 16:14 SampleCode\
+drwxr-xr-x  3 pivotal pivotal 4096 Jan 16 16:32 schemas\
+drwxr-xr-x  4 pivotal pivotal 4096 Jan 16 16:32 templates\
+drwxr-xr-x  8 pivotal pivotal 4096 Jan 16 16:32 tools\
+[pivotal@localhost Pivotal_GemFire_810]$\
+
+\f1\fs26 \cf0 \
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf0 \'a0
+\f1\fs26 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+\'a0\
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 1.3. Setting Up Your Environment\
+\pard\pardeftab720
+
+\b0\fs30 \cf0 1.3.1. Check your folder at
+\fs26 : /home/pivotal/SPLabs/gemfire.\uc0\u8232 
+\fs36 \uc0\u8232 \u8232 
+\fs32 1.3.2. Update your PATH to include GemFire and the Java JDK. Edit 
+\b setup.sh
+\b0  file and add:
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth13160\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf5 export\cf0  GEMFIRE=/home/pivotal/Pivotal/Pivotal_GemFire_810
+\f1\fs26 \
+
+\f3\fs30 \cf5 export\cf0  JAVA_HOME=/opt/jdk1.8.0_45/
+\f1\fs26 \
+
+\f3\fs30 \cf5 export\cf0  GF_JAVA=$JAVA_HOME/bin/java
+\f1\fs26 \
+
+\f3\fs30 \cf5 export\cf0  PATH=$JAVA_HOME/bin:$GEMFIRE/bin:$PATH
+\f1\fs26 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720
+
+\fs32 \cf0 \uc0\u8232 
+\fs36 \uc0\u8232 
+\fs32 1.3.3. Update the environment variables in 2 separate terminal windows, there will be times you will need both windows.
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth13160\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf5 export\cf0  GEMFIRE=/home/pivotal/Pivotal/Pivotal_GemFire_810
+\f1\fs26 \
+
+\f3\fs30 \cf5 export\cf0  JAVA_HOME=/opt/jdk1.8.0_45/
+\f1\fs26 \
+
+\f3\fs30 \cf5 export\cf0  GF_JAVA=$JAVA_HOME/bin/java
+\f1\fs26 \
+
+\f3\fs30 \cf5 export\cf0  PATH=$JAVA_HOME/bin:$GEMFIRE/bin:$PATH
+\f1\fs26 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720
+
+\fs32 \cf0 \uc0\u8232 
+\fs36 \uc0\u8232 
+\fs32 1.3.4. Edit\'a0
+\b ./server1/gemfire.properties
+\b0 \'a0and\'a0
+\b ./server2/gemfire.properties
+\b0 \'a0to include correct directory where extracted for the following property\uc0\u8232 
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth11800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 deploy-working-dir=/home/pivotal/Pivotal/SPLabs/gemfire/deploy
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 2. Start GemFire Cluster\
+\pard\pardeftab720\sa320
+
+\b0\fs32 \cf0 2.1. Start 1 locator and 2 server nodes using the provided script. Output should be as shown below.
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth11800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 [pivotal@localhost gemfire]$ . startall.sh
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\fs32 \cf0 \'a0
+\fs26 \
+
+\fs32 The locator starts:
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trwWidth24180\trftsWidth3 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth23780\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 gfsh>start locator --name=locator1 --properties-file=./locator/gemfire.properties --bind-address=localhost --port=10334 --dir=locator --J=-Xms256m --J=-Xmx256m\
+Starting a GemFire Locator in /home/pivotal/Pivotal/SPLabs/gemfire/locator...\
+....................................\
+Locator in /home/pivotal/Pivotal/SPLabs/gemfire/locator on localhost.localdomain[10334] as locator1 is currently online.\
+Process ID: 393057\
+Uptime: 18 seconds\
+GemFire Version: 8.1.0\
+Java Version: 1.8.0_45\
+Log File: /home/pivotal/Pivotal/SPLabs/gemfire/locator/locator1.log\
+JVM Arguments: -DgemfirePropertyFile=/home/pivotal/Pivotal/SPLabs/gemfire/locator/gemfire.properties -Dgemfire.enable-cluster-configuration=true -Dgemfire.load-cluster-configuration-from-dir=false -Xms256m -Xmx256m -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806\
+Class-Path: /home/pivotal/Pivotal/Pivotal_GemFire_810/lib/gemfire.jar:/home/pivotal/Pivotal/Pivotal_GemFire_810/lib/locator-dependencies.jar
+\f1\fs26 \cf0 \
+
+\f3\fs30 \cf3 \'a0
+\f1\fs26 \cf0 \
+
+\f3\fs30 \cf3 Successfully connected to: [host=localhost, port=1099]
+\f1\fs26 \cf0 \
+
+\f3\fs30 \cf3 \'a0
+\f1\fs26 \cf0 \
+
+\f3\fs30 \cf3 Cluster configuration service is up and running.
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+
+\fs32 Server1:
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trwWidth24200\trftsWidth3 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth23800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 gfsh>start server --name=server1 --cache-xml-file=./server1/cache.xml --properties-file=./server1/gemfire.properties --locators=localhost[10334] --dir=server1 --J=-Xms512m --J=-Xmx512m --classpath=../lib/clientapp.jar:../lib/asynceventlistener.jar\
+Starting a GemFire Server in /home/pivotal/Pivotal/SPLabs/gemfire/server1...\
+.......\
+Server in /home/pivotal/Pivotal/SPLabs/gemfire/server1 on 10.63.213.185[40009] as server1 is currently online.\
+Process ID: 397921\
+Uptime: 3 seconds\
+GemFire Version: 8.1.0\
+Java Version: 1.8.0_45\
+Log File: /home/pivotal/Pivotal/SPLabs/gemfire/server1/server1.log\
+JVM Arguments: -DgemfirePropertyFile=/home/pivotal/Pivotal/SPLabs/gemfire/server1/gemfire.properties -Dgemfire.cache-xml-file=/home/pivotal/Pivotal/SPLabs/gemfire/server1/cache.xml -Dgemfire.locators=localhost[10334] -Dgemfire.use-cluster-configuration=true -Xms512m -Xmx512m -XX:OnOutOfMemoryError=kill -KILL %p -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806\
+Class-Path: /home/pivotal/Pivotal/Pivotal_GemFire_810/lib/gemfire.jar:../lib/clientapp.jar:../lib/asynceventlistener.jar:/home/pivotal/Pivotal/Pivotal_GemFire_810/lib/server-dependencies.jar
+\f1\fs26 \cf0 \
+
+\f3\fs30 \cf3 \'a0
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+
+\fs32 Server2:
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trwWidth24200\trftsWidth3 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth23800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 gfsh>start server --name=server2 --cache-xml-file=./server2/cache.xml --properties-file=./server2/gemfire.properties --locators=localhost[10334] --dir=server2 --server-port=40405 --J=-Xms512m --J=-Xmx512m --classpath=../lib/clientapp.jar:../lib/asynceventlistener.jar\
+Starting a GemFire Server in /home/pivotal/Pivotal/SPLabs/gemfire/server2...\
+.......\
+Server in /home/pivotal/Pivotal/SPLabs/gemfire/server2 on 10.63.213.185[40405] as server2 is currently online.\
+Process ID: 398018\
+Uptime: 3 seconds\
+GemFire Version: 8.1.0\
+Java Version: 1.8.0_45\
+Log File: /home/pivotal/Pivotal/SPLabs/gemfire/server2/server2.log\
+JVM Arguments: -DgemfirePropertyFile=/home/pivotal/Pivotal/SPLabs/gemfire/server2/gemfire.properties -Dgemfire.cache-xml-file=/home/pivotal/Pivotal/SPLabs/gemfire/server2/cache.xml -Dgemfire.locators=localhost[10334] -Dgemfire.use-cluster-configuration=true -Xms512m -Xmx512m -XX:OnOutOfMemoryError=kill -KILL %p -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806\
+Class-Path: /home/pivotal/Pivotal/Pivotal_GemFire_810/lib/gemfire.jar:../lib/clientapp.jar:../lib/asynceventlistener.jar:/home/pivotal/Pivotal/Pivotal_GemFire_810/lib/server-dependencies.jar
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+
+\fs32 List members:
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth11800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 gfsh>list members;\
+  Name   | Id\
+-------- | --------------------------------------------\
+locator1 | localhost(locator1:397722:locator)<v0>:10920\
+server1  | 10.63.213.185(server1:397921)<v1>:17764\
+server2  | 10.63.213.185(server2:398018)<v2>:43954
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+
+\fs32 List regions:
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth11800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf6 gfsh>list regions;\
+List of regions\
+---------------\
+departments\
+employees
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+
+\fs32 2.2. Run the "
+\b verify.sh
+\b0 " script, this will just confirm you have no data BUT a GemFire Distributed System is running and ready to go.
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth11800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 [pivotal@localhost gemfire]$ ./verify.sh\
+    _________________________     __\
+   / _____/ ______/ ______/ /____/ /\
+  / /  __/ /___  /_____  / _____  /\
+ / /__/ / ____/  _____/ / /    / /\
+/______/_/      /______/_/    /_/    v8.1.0\
+\
+Monitor and Manage GemFire\
+gfsh>connect --locator=localhost[10334];\
+Connecting to Locator at [host=localhost, port=10334] ..\
+Connecting to Manager at [host=10.63.213.185, port=1099] ..\
+Successfully connected to: [host=10.63.213.185, port=1099]\
+\
+gfsh>list members;\
+  Name   | Id\
+-------- | --------------------------------------------\
+locator1 | localhost(locator1:397722:locator)<v0>:10920\
+server1  | 10.63.213.185(server1:397921)<v1>:17764\
+server2  | 10.63.213.185(server2:398018)<v2>:43954\
+\
+gfsh>list regions;\
+List of regions\
+---------------\
+departments\
+employees\
+\
+gfsh>query --query="select * from /departments";\
+\
+Result     : true\
+startCount : 0\
+endCount   : 20\
+Rows       : 0\
+\
+\
+NEXT_STEP_NAME : END\
+\
+gfsh>query --query="select * from /employees";\
+\
+Result     : true\
+startCount : 0\
+endCount   : 20\
+Rows       : 0\
+\
+\
+NEXT_STEP_NAME : END\
+\
+gfsh>exit;\
+Exiting...\
+[pivotal@localhost gemfire]$
+\f1 \cf0 \
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 \'a0
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+\'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 3. Add Data Using GFSH\
+\pard\pardeftab720\sa320
+
+\b0\fs32 \cf0 3.1. Change to the directory shown below.
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth11800\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 [pivotal@localhost data]$
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+\uc0\u8232 
+\fs32 3.2. Run the script "
+\b run.sh
+\b0 " and it should load some department / employee data into the defined regions.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 [pivotal@localhost data]$ ./run.sh\
+    _________________________     __\
+   / _____/ ______/ ______/ /____/ /\
+  / /  __/ /___  /_____  / _____  /\
+ / /__/ / ____/  _____/ / /    / /\
+/______/_/      /______/_/    /_/    v8.1.0\
+\
+Monitor and Manage GemFire\
+gfsh>connect --locator=localhost[10334];\
+Connecting to Locator at [host=localhost, port=10334] ..\
+Connecting to Manager at [host=10.63.213.185, port=1099] ..\
+Successfully connected to: [host=10.63.213.185, port=1099]\
+\
+gfsh>run --file=/home/pivotal/Pivotal/SPLabs/gemfire/data/dept-data\
+1. Executing - put --key=10 --value=('deptno':10,'name':'ACCOUNTING') --value-class=io.pivotal.app.domain.Department --region=departments\
+\
+Result      : true\
+Key Class   : java.lang.String\
+Key         : 10\
+Value Class : io.pivotal.app.domain.Department\
+\
+Value\
+------\
+<NULL>\
+\
+2. Executing - put --key=20 --value=('deptno':20,'name':'RESEARCH') --value-class=io.pivotal.app.domain.Department --region=departments\
+\
+Result      : true\
+Key Class   : java.lang.String\
+Key         : 20\
+Value Class : io.pivotal.app.domain.Department\
+\
+Value\
+------\
+<NULL>\
+\
+3. Executing - put --key=30 --value=('deptno':30,'name':'SALES') --value-class=io.pivotal.app.domain.Department --region=departments\
+\
+Result      : true\
+Key Class   : java.lang.String\
+Key         : 30\
+Value Class : io.pivotal.app.domain.Department\
+\
+Value\
+------\
+<NULL>\
+
+\f1 \cf0 \
+
+\f3 \cf3 ....
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs32 3.3. Run "
+\b verify.sh
+\b0 " as shown below. Don't forget to go back one directory , and this time we will have some data.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 [pivotal@localhost gemfire]$ ./verify.sh\
+    _________________________     __\
+   / _____/ ______/ ______/ /____/ /\
+  / /  __/ /___  /_____  / _____  /\
+ / /__/ / ____/  _____/ / /    / /\
+/______/_/      /______/_/    /_/    v8.1.0\
+\
+Monitor and Manage GemFire\
+gfsh>connect --locator=localhost[10334];\
+Connecting to Locator at [host=localhost, port=10334] ..\
+Connecting to Manager at [host=10.63.213.185, port=1099] ..\
+Successfully connected to: [host=10.63.213.185, port=1099]\
+\
+gfsh>list members;\
+  Name   | Id\
+-------- | --------------------------------------------\
+locator1 | localhost(locator1:397722:locator)<v0>:10920\
+server1  | 10.63.213.185(server1:397921)<v1>:17764\
+server2  | 10.63.213.185(server2:398018)<v2>:43954\
+\
+gfsh>list regions;\
+List of regions\
+---------------\
+departments\
+employees\
+\
+gfsh>query --query="select * from /departments";\
+\
+Result     : true\
+startCount : 0\
+endCount   : 20\
+Rows       : 4\
+\
+deptno | name\
+------ | ----------\
+10     | ACCOUNTING\
+40     | OPERATIONS\
+30     | SALES\
+20     | RESEARCH\
+\
+NEXT_STEP_NAME : END\
+\
+gfsh>query --query="select * from /employees";\
+\
+Result     : true\
+startCount : 0\
+endCount   : 20\
+Rows       : 13\
+\
+empno | deptno |   name   | job\
+----- | ------ | -------- | ---------\
+7369  | 20     | SMITH    | CLERK\
+7378  | 20     | SALLY    | MANAGER\
+7381  | 40     | BROWN    | SALESMAN\
+7374  | 10     | LUCAS    | SALESMAN\
+7380  | 40     | BLACK    | CLERK\
+7371  | 10     | APICELLA | SALESMAN\
+7372  | 30     | LUCIA    | PRESIDENT\
+7377  | 20     | ADAM     | CLERK\
+7373  | 40     | SIENA    | CLERK\
+7375  | 30     | ROB      | CLERK\
+7370  | 10     | APPLES   | MANAGER\
+7376  | 20     | ADRIAN   | CLERK\
+7379  | 10     | FRANK    | CLERK\
+\
+NEXT_STEP_NAME : END\
+\
+gfsh>exit;\
+Exiting...\cell \lastrow\row
+\pard\pardeftab720
+
+\f1 \cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 4. Create A New Region\
+\pard\pardeftab720
+
+\b0\fs32 \cf0 There are 3 ways to add a new Region in GemFire, in which we use option 2 below.
+\fs26 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls1\ilvl0
+\fs32 \cf0 {\listtext	1.	}cache.xml (Requires a restart)
+\fs26 \
+\ls1\ilvl0
+\fs32 {\listtext	2.	}gfsh
+\fs26 \
+\ls1\ilvl0
+\fs32 {\listtext	3.	}Through the GemFire API
+\fs26 \
+\pard\pardeftab720\sa320
+
+\fs32 \cf0 A simple and fast way to create a data region in the GemFire cache is to use the gfsh command-line tool as shown below.\uc0\u8232 \u8232 4.1. Connect to the cluster as shown below.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 gfsh>
+\f5\b connect --locator=localhost[10334];
+\f1\b0 \cf0 \
+
+\f3 \cf3 Connecting to Locator at [host=localhost, port=10334] ..
+\f1 \cf0 \
+
+\f3 \cf3 Connecting to Manager at [host=localhost, port=1099] ..
+\f1 \cf0 \
+
+\f3 \cf3 Successfully connected to: [host=localhost, port=1099]
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\fs32 \cf0 \uc0\u8232 4.2. Create a new partioned region called "
+\b people
+\b0 " as shown below.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 gfsh>
+\f5\b create
+\f3\b0  
+\f5\b region --name=people --type=PARTITION --total-num-buckets=11 --redundant-copies=1
+\f3\b0 \uc0\u8232 Member\'a0 | Status\u8232 ------- | -------------------------------------\u8232 server1 | Region "/people" created on "server1"\u8232 server2 | Region "/people" created on "server2"
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs32 4.3. Describe the region as shown below.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 gfsh>
+\f5\b describe region --name=/people
+\f1\b0 \cf0 \
+
+\f3 \cf3 ..........................................................
+\f1 \cf0 \
+
+\f3 \cf3 Name\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 : people
+\f1 \cf0 \
+
+\f3 \cf3 Data Policy\'a0\'a0\'a0\'a0 : partition
+\f1 \cf0 \
+
+\f3 \cf3 Hosting Members : server2
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 server1
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 Non-Default Attributes Shared By Hosting Members\'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0 Type\'a0\'a0\'a0 |\'a0\'a0\'a0\'a0\'a0\'a0 Name\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | Value
+\f1 \cf0 \
+
+\f3 \cf3 --------- | ----------------- | -----
+\f1 \cf0 \
+
+\f3 \cf3 Region\'a0\'a0\'a0 | size\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | 0
+\f1 \cf0 \
+
+\f3 \cf3 Partition | redundant-copies\'a0 | 1
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | total-num-buckets | 11
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | local-max-memory\'a0 | 441
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 5. Deploy A New JAR File into the Cluster\
+\pard\pardeftab720\sa320
+
+\b0\fs32 \cf0 At this point we are going to dynamically deploy a new JAR file which includes a simple POJO for holding Person objects. This ability enables us to avoid having to shutdown the cluster.\uc0\u8232 \u8232 5.1. The JAR file we are deploying contains a new Domain Model class called Person which is just a POJO as shown below.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 package io.pivotal.domain;\uc0\u8232 \u8232 public class Person\u8232 \{\u8232 \'a0\'a0\'a0 private int id;\u8232 \'a0\'a0\'a0 private String name;\u8232 \u8232 \'a0\'a0\'a0 public Person()\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public Person(int id, String name) \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 this.id = id;\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 this.name = name;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public int getId() \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return id;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void setId(int id) \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 this.id = id;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public String getName() \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return name;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void setName(String name) \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 this.name = name;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 @Override\u8232 \'a0\'a0\'a0 public String toString() \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return "io.pivotal.domain.Person\{" +\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 "id=" + id +\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 ", name='" + name + '\\'' +\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 '\}';\u8232 \'a0\'a0\'a0 \}\u8232 \}
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs32 5.2. Connect to the cluster as shown below.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 gfsh>
+\f5\b connect --locator=localhost[10334];
+\f1\b0 \cf0 \
+
+\f3 \cf3 Connecting to Locator at [host=localhost, port=10334] ..
+\f1 \cf0 \
+
+\f3 \cf3 Connecting to Manager at [host=localhost, port=1099] ..
+\f1 \cf0 \
+
+\f3 \cf3 Successfully connected to: [host=localhost, port=1099]
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs32 5.3. Deploy "
+\b domain.jar.
+\b0 " Copy domain.jar from ~/Pivotal/SPLabs/gemfire/resources\
+ to ~/Pivotal/SPLabs/gemfire/
+\b lib
+\b0 . [You will need to use the directory into which you have installed this workshop].
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15460\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 gfsh>deploy --jar=lib/domain.jar\
+Member  | Deployed JAR | Deployed JAR Location\
+------- | ------------ | --------------------------------------------------------------\
+server1 | domain.jar   | /home/pivotal/Pivotal/SPLabs/gemfire/deploy/vf.gf#domain.jar#2\
+server2 | domain.jar   | /home/pivotal/Pivotal/SPLabs/gemfire/deploy/vf.gf#domain.jar#2
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs32 5.4. You can view deployed JAR files as follows
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 gfsh>list deployed\
+Member  |      JAR      | JAR Location\
+------- | ------------- | -----------------------------------------------------------------\
+server1 | domain.jar    | /home/pivotal/Pivotal/SPLabs/gemfire/deploy/vf.gf#domain.jar#2\
+server1 | functions.jar | /home/pivotal/Pivotal/SPLabs/gemfire/deploy/vf.gf#functions.jar#1\
+server2 | domain.jar    | /home/pivotal/Pivotal/SPLabs/gemfire/deploy/vf.gf#domain.jar#2\
+server2 | functions.jar | /home/pivotal/Pivotal/SPLabs/gemfire/deploy/vf.gf#functions.jar#1
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 6. Bulk Insert Domain Model Objects into GemFire\
+\pard\pardeftab720\sa320
+
+\b0\fs32 \cf0 In the example below we will load Person.java POJO into the "/people" region using the region.putAll method which should be used when bulk loading into the cluster.\uc0\u8232 \u8232 6.1. Open the java class "
+\b BulkInsertPerson.java
+\b0 " in the package "
+\b io.pivotal.app.insert
+\b0 ".\uc0\u8232 \u8232 The java code here is as follows.
+\fs26 \
+\pard\pardeftab720\sa320
+
+\b\fs32 \cf0 BulkInsertPerson.java
+\b0\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 package io.pivotal.app.insert;
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 import io.pivotal.domain.Person;
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 import java.util.ArrayList;
+\f1 \cf0 \
+
+\f3 \cf3 import java.util.HashMap;
+\f1 \cf0 \
+
+\f3 \cf3 import java.util.List;
+\f1 \cf0 \
+
+\f3 \cf3 import java.util.Map;
+\f1 \cf0 \
+
+\f3 \cf3 import java.util.Random;
+\f1 \cf0 \
+
+\f3 \cf3 import java.util.Scanner;
+\f1 \cf0 \
+
+\f3 \cf3 import java.util.logging.Level;
+\f1 \cf0 \
+
+\f3 \cf3 import java.util.logging.Logger;
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 import com.gemstone.gemfire.cache.Region;
+\f1 \cf0 \
+
+\f3 \cf3 import com.gemstone.gemfire.cache.client.ClientCache;
+\f1 \cf0 \
+
+\f3 \cf3 import com.gemstone.gemfire.cache.client.ClientCacheFactory;
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 public class BulkInsertPerson
+\f1 \cf0 \
+
+\f3 \cf3 \{
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 private Logger logger = Logger.getLogger(this.getClass().getSimpleName());
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 private ClientCache cache = null;
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 private final int BATCH_SIZE = 10000;
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 private final int SAMPLE_SIZE = 100000;
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 Random r = new Random(System.currentTimeMillis());
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 private BulkInsertPerson ()
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 \{
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ClientCacheFactory ccf = new ClientCacheFactory();
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ccf.set("cache-xml-file", "query-client.xml");
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 cache = ccf.create();
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 \}
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 public void run()
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 \{
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Region<String,Person> peopleRegion = cache.getRegion("people");
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Map<String, Person> buffer = new HashMap<String, Person>();
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Scanner scanner = new java.util.Scanner(System.in);
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 long start = System.currentTimeMillis();
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (int i = 1; i <= SAMPLE_SIZE; i++)
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \'a0\'a0\'a0 int firstNameIx = r.nextInt(firstNames.size());
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \'a0\'a0\'a0 int lastNameIx = r.nextInt(lastNames.size());
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 // place person into temp buffer
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 buffer.put(String.valueOf(i), new Person(i, String.format("%s %s", firstNames.get(firstNameIx), lastNames.get(lastNameIx))));
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 if ((i % BATCH_SIZE) == 0)
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 // ready to insert a batch into our region
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 peopleRegion.putAll(buffer);
+\f1 \cf0 \
+
+\f3 \cf3 \'a0 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0buffer.clear();
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.println("Inserted " + BATCH_SIZE + " records");
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.println("Press any key to insert more...");
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 scanner.nextLine();
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \'a0\'a0\'a0\}
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // there may be existing records to flush so this takes care of it
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 if (!buffer.isEmpty())
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 peopleRegion.putAll(buffer);
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 buffer.clear();
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 long end = System.currentTimeMillis() - start;
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 float elapsedTimeSec = end/1000F;
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 logger.log (Level.INFO, String.format("Elapsed time in seconds %f", elapsedTimeSec));
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 \}
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 public static void main(String[] args)
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 \{
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 BulkInsertPerson test = new BulkInsertPerson();
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 test.run();
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0 \}
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 6.2. Run the java class and verify output as shown below.\'a0 First, copy 
+\b config/query-client.xml
+\b0  to the current directory.
+\fs26 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat4 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth15160\clftsWidth3 \clbrdrt\brdrs\brdrw120\brdrcf0 \clbrdrl\brdrs\brdrw120\brdrcf0 \clbrdrb\brdrs\brdrw120\brdrcf0 \clbrdrr\brdrs\brdrw120\brdrcf0 \clpadl140 \clpadr140 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 java -classpath lib/domain.jar:lib/clientapp.jar:$GEMFIRE/lib/server-dependencies.jar io.pivotal.app.insert.BulkInsertPerson
+\f1\fs26 \cf0 \
+
+\f3\fs30 \cf3 \'a0
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\fs30 \cf0 \'a0
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 Jan 19, 2015 8:37:57 PM io.pivotal.app.insert.BulkInsertPerson run\uc0\u8232 [info 2015/01/19 20:37:59.706 EST\'a0 <main> tid=0x1] (tid=1 msgId=0) Elapsed time in seconds 1.993000
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\fs30 \cf0 \uc0\u8232 6.3. Get a count of the number of objects in the region which should be 100,000 entries.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b query --query="select * from /people limit 10";
+\f3\b0 \uc0\u8232 \u8232 \cf3 Result\'a0\'a0\'a0\'a0 : true
+\f1 \cf0 \
+
+\f3 \cf3 startCount : 0
+\f1 \cf0 \
+
+\f3 \cf3 endCount\'a0\'a0 : 20
+\f1 \cf0 \
+
+\f3 \cf3 Rows\'a0\'a0\'a0\'a0\'a0\'a0 : 10
+\f1 \cf0 \
+
+\f3 \cf3 \'a0
+\f1 \cf0 \
+
+\f3 \cf3 \'a0\'a0\'a0\'a0\'a0 name\'a0\'a0\'a0\'a0\'a0\'a0 | id
+\f1 \cf0 \
+
+\f3 \cf3 ---------------- | -----
+\f1 \cf0 \
+
+\f3 \cf3 Hyatt Morales\'a0\'a0\'a0 | 75963
+\f1 \cf0 \
+
+\f3 \cf3 Yetta Craig\'a0\'a0\'a0\'a0\'a0 | 10209
+\f1 \cf0 \
+
+\f3 \cf3 Baxter Yates\'a0\'a0\'a0\'a0 | 37511
+\f1 \cf0 \
+
+\f3 \cf3 Igor Tyler\'a0\'a0\'a0\'a0\'a0\'a0 | 74535
+\f1 \cf0 \
+
+\f3 \cf3 Mikayla Faulkner | 37702
+\f1 \cf0 \
+
+\f3 \cf3 Allistair Durham | 41179
+\f1 \cf0 \
+
+\f3 \cf3 Macaulay Nichols | 77226
+\f1 \cf0 \
+
+\f3 \cf3 Steel Duffy\'a0\'a0\'a0\'a0\'a0 | 16848
+\f1 \cf0 \
+
+\f3 \cf3 Jordan Hull\'a0\'a0\'a0\'a0\'a0 | 63568
+\f1 \cf0 \
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf3 Brielle Crosby\'a0\'a0 | 26424\uc0\u8232 \cf0 \uc0\u8232 NEXT_STEP_NAME : END\u8232 \u8232 gfsh>
+\f5\b query --query="select count(*) from /people";
+\f3\b0 \uc0\u8232 \u8232 Result\'a0\'a0\'a0\'a0 : true\u8232 startCount : 0\u8232 endCount\'a0\'a0 : 20\u8232 Rows\'a0\'a0\'a0\'a0\'a0\'a0 : 1\u8232 \u8232 Result\u8232 ------\u8232 
+\f5\b 100000
+\f3\b0 \uc0\u8232 \u8232 NEXT_STEP_NAME : END
+\f1 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 7. Querying\
+\pard\pardeftab720
+
+\b0\fs30 \cf0 In the following examples we will query the "
+\b /employees
+\b0 " region using a java client as well as GFSH.
+\fs26 \
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 7.1. Querying data from a Java Client using OQL\
+\pard\pardeftab720\sa320
+
+\b0\fs30 \cf0 7.1.1. Open the java class "
+\b QueryEmployees.java
+\b0 " in the package "
+\b io.pivotal.app.query
+\b0 ".\uc0\u8232 \u8232 The java code is as follows.
+\fs26 \
+
+\b\fs30 QueryEmployees.java
+\b0\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf3 package io.pivotal.app.query;\uc0\u8232 \u8232 import com.gemstone.gemfire.cache.Region;\u8232 import com.gemstone.gemfire.cache.client.ClientCache;\u8232 import com.gemstone.gemfire.cache.client.ClientCacheFactory;\u8232 import com.gemstone.gemfire.cache.query.Query;\u8232 import com.gemstone.gemfire.cache.query.QueryService;\u8232 import com.gemstone.gemfire.cache.query.SelectResults;\u8232 import io.pivotal.app.domain.Employee;\u8232 \u8232 import java.util.Collection;\u8232 import java.util.Iterator;\u8232 import java.util.logging.Level;\u8232 import java.util.logging.Logger;\u8232 \u8232 public class QueryEmployees\u8232 \{\u8232 \'a0\'a0\'a0 private ClientCache cache = null;\u8232 \'a0\'a0\'a0 private Logger logger = Logger.getLogger(this.getClass().getSimpleName());\u8232 \u8232 \'a0\'a0\'a0 public QueryEmployees()\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ClientCacheFactory ccf = new ClientCacheFactory();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ccf.set("cache-xml-file", "query-client.xml");\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 cache = ccf.create();\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void run() throws Exception\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Region<Integer,Employee> employees = cache.getRegion("employees");\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 QueryService queryService = cache.getQueryService();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Query query = queryService.newQuery("SELECT * FROM /employees where deptno = 10");\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 logger.log (Level.INFO, "\\nExecuting query:\\n\\t" + query.getQueryString());\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Object result = query.execute();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Collection<?> collection = ((SelectResults<?>)result).asList();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 logger.log (Level.INFO, String.format("%s Employees in department 10", collection.size()));\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Iterator<?> iter = collection.iterator();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 while (iter.hasNext())\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 Employee emp = (Employee) iter.next();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.println(emp.toString());\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 /**\u8232 \'a0\'a0\'a0\'a0 * @param args\u8232 \'a0\'a0\'a0\'a0 */\u8232 \'a0\'a0\'a0 public static void main(String[] args)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 QueryEmployees test = new QueryEmployees();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 try\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 test.run();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 catch (Exception e)\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 // TODO Auto-generated catch block\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 e.printStackTrace();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \}
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 7.1.2. Run the java class and verify output as follows. First, copy 
+\b config/query-client.xml
+\b0  to the current directory.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15440\trftsWidth3 \trbrdrt\brdrs\brdrw120\brdrcf0 \trbrdrl\brdrs\brdrw120\brdrcf0 \trbrdrb\brdrs\brdrw120\brdrcf0 \trbrdrr\brdrs\brdrw120\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15280\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 java -classpath lib/domain.jar:lib/clientapp.jar:$GEMFIRE/lib/server-dependencies.jar io.pivotal.app.query.QueryEmployees
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15440\trftsWidth3 \trbrdrt\brdrs\brdrw120\brdrcf3 \trbrdrl\brdrs\brdrw120\brdrcf3 \trbrdrb\brdrs\brdrw120\brdrcf3 \trbrdrr\brdrs\brdrw120\brdrcf3 
+\clvertalc \clshdrawnil \clwWidth15280\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 Jan 19, 2015 8:19:05 PM io.pivotal.app.query.QueryEmployees run\uc0\u8232 INFO: \u8232 Executing query:\u8232 \'a0\'a0\'a0 SELECT * FROM /employees where deptno = 10\u8232 Jan 19, 2015 8:19:05 PM io.pivotal.app.query.QueryEmployees run\u8232 INFO: 4 Employees in department 10\u8232 
+\f5\b Employee [empno=7374, name=LUCAS, job=SALESMAN, deptno=10]\uc0\u8232 Employee [empno=7371, name=APICELLA, job=SALESMAN, deptno=10]\u8232 Employee [empno=7370, name=APPLES, job=MANAGER, deptno=10]\u8232 Employee [empno=7379, name=FRANK, job=CLERK, deptno=10]
+\f1\b0 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 7.2. Querying all region data\
+\pard\pardeftab720\sa320
+
+\b0\fs30 \cf0 In this example we get all entries by querying the keys on the server themselves. This is not recommended for very large data sets , where you should use OQL to query the region rather then as shown below. This example just shows a fast way to get all keys from server and iterate the set of region data.\uc0\u8232 \u8232 7.2.1. Open the java class "
+\b QueryAllEmployees.java
+\b0 " in the package "
+\b io.pivotal.app.query
+\b0 ".\uc0\u8232 \u8232 The java code is as follows.
+\fs26 \
+
+\b\fs30 QueryAllEmployees.java
+\b0\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15440\trftsWidth3 \trbrdrt\brdrs\brdrw120\brdrcf3 \trbrdrl\brdrs\brdrw120\brdrcf3 \trbrdrb\brdrs\brdrw120\brdrcf3 \trbrdrr\brdrs\brdrw120\brdrcf3 
+\clvertalc \clshdrawnil \clwWidth15280\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 package io.pivotal.app.query;\uc0\u8232 \u8232 import com.gemstone.gemfire.cache.Region;\u8232 import com.gemstone.gemfire.cache.client.ClientCache;\u8232 import com.gemstone.gemfire.cache.client.ClientCacheFactory;\u8232 import io.pivotal.app.domain.Employee;\u8232 \u8232 import java.util.Map;\u8232 import java.util.Set;\u8232 import java.util.logging.Level;\u8232 import java.util.logging.Logger;\u8232 \u8232 public class QueryAllEmployees\u8232 \{\u8232 \'a0\'a0\'a0 private ClientCache cache = null;\u8232 \'a0\'a0\'a0 private Logger logger = Logger.getLogger(this.getClass().getSimpleName());\u8232 \u8232 \'a0\'a0\'a0 public QueryAllEmployees()\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ClientCacheFactory ccf = new ClientCacheFactory();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ccf.set("cache-xml-file", "query-client.xml");\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 cache = ccf.create();\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void run() throws Exception\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Region<String,Employee> employees = cache.getRegion("employees");\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Set<String> keysOnServer = employees.keySetOnServer();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 logger.log (Level.INFO, "\\nEmployees size:\\n\\t" + keysOnServer.size());\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Map<String, Employee> countriesMap = employees.getAll(keysOnServer);\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Set<Map.Entry<String, Employee>> entries = countriesMap.entrySet();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (Map.Entry<String,Employee> entry: entries)\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.println(\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 String.format("Key %s, Value %s", entry.getKey(), entry.getValue()));\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 /**\u8232 \'a0\'a0\'a0\'a0 * @param args\u8232 \'a0\'a0\'a0\'a0 */\u8232 \'a0\'a0\'a0 public static void main(String[] args)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 QueryAllEmployees test = new QueryAllEmployees();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 try\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 test.run();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 catch (Exception e)\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 // TODO Auto-generated catch block\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 e.printStackTrace();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \}
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 7.2.2. Run the java class and verify output as follows. First, copy 
+\b config/query-client.xml
+\b0  to the current directory.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15440\trftsWidth3 \trbrdrt\brdrs\brdrw120\brdrcf0 \trbrdrl\brdrs\brdrw120\brdrcf0 \trbrdrb\brdrs\brdrw120\brdrcf0 \trbrdrr\brdrs\brdrw120\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15280\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3\fs30 \cf3 java -classpath lib/domain.jar:lib/clientapp.jar:$GEMFIRE/lib/server-dependencies.jar io.pivotal.app.query.QueryAllEmployees
+\f1\fs26 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\fs30 \cf0 \'a0
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf3 Jan 19, 2015 8:44:39 PM io.pivotal.app.query.QueryAllEmployees run\uc0\u8232 INFO: \u8232 Employees size:\u8232 \'a0\'a0\'a0 13\u8232 
+\f5\b Key 7381, Value Employee [empno=7381, name=BROWN, job=SALESMAN, deptno=40]\uc0\u8232 Key 7380, Value Employee [empno=7380, name=BLACK, job=CLERK, deptno=40]\u8232 Key 7370, Value Employee [empno=7370, name=APPLES, job=MANAGER, deptno=10]\u8232 Key 7372, Value Employee [empno=7372, name=LUCIA, job=PRESIDENT, deptno=30]\u8232 Key 7371, Value Employee [empno=7371, name=APICELLA, job=SALESMAN, deptno=10]\u8232 Key 7374, Value Employee [empno=7374, name=LUCAS, job=SALESMAN, deptno=10]\u8232 Key 7373, Value Employee [empno=7373, name=SIENA, job=CLERK, deptno=40]\u8232 Key 7376, Value Employee [empno=7376, name=ADRIAN, job=CLERK, deptno=20]\u8232 Key 7375, Value Employee [empno=7375, name=ROB, job=CLERK, deptno=30]\u8232 Key 7369, Value Employee [empno=7369, name=SMITH, job=CLERK, deptno=20]\u8232 Key 7378, Value Employee [empno=7378, name=SALLY, job=MANAGER, deptno=20]\u8232 Key 7377, Value Employee [empno=7377, name=ADAM, job=CLERK, deptno=20]\u8232 Key 7379, Value Employee [empno=7379, name=FRANK, job=CLERK, deptno=10]
+\f1\b0 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 7.3. Querying a Region by key\
+\pard\pardeftab720\sa320
+
+\b0\fs30 \cf0 The fastest way to retrieve data is by using it's key. In this example we do that.\uc0\u8232 \u8232 7.3.1. Open the java class "
+\b QueryEmployeeByKey.java
+\b0 " in the package "
+\b io.pivotal.app.query
+\b0 ".\uc0\u8232 \u8232 The java code here is as follows.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 package io.pivotal.app.query;\uc0\u8232 \u8232 import com.gemstone.gemfire.cache.Region;\u8232 import com.gemstone.gemfire.cache.client.ClientCache;\u8232 import com.gemstone.gemfire.cache.client.ClientCacheFactory;\u8232 import io.pivotal.app.domain.Employee;\u8232 \u8232 import java.util.logging.Level;\u8232 import java.util.logging.Logger;\u8232 \u8232 public class QueryEmployeeByKey\u8232 \{\u8232 \'a0\'a0\'a0 private ClientCache cache = null;\u8232 \'a0\'a0\'a0 private Logger logger = Logger.getLogger(this.getClass().getSimpleName());\u8232 \u8232 \'a0\'a0\'a0 public QueryEmployeeByKey()\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ClientCacheFactory ccf = new ClientCacheFactory();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ccf.set("cache-xml-file", "query-client.xml");\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 cache = ccf.create();\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void run() throws Exception\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Region<Integer,Employee> employees = cache.getRegion("employees");\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 String empKey = "7370";\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Employee emp = employees.get(empKey);\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 logger.log (Level.INFO, emp.toString());\u8232 \u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 /**\u8232 \'a0\'a0\'a0\'a0 * @param args\u8232 \'a0\'a0\'a0\'a0 */\u8232 \'a0\'a0\'a0 public static void main(String[] args)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 QueryEmployeeByKey test = new QueryEmployeeByKey();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 try\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 test.run();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 catch (Exception e)\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 // TODO Auto-generated catch block\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 e.printStackTrace();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0 \}\u8232 \}
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 7.3.2. Run the java class and verify output as follows.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 Jan 19, 2015 8:49:05 PM io.pivotal.app.query.QueryEmployeeByKey run\uc0\u8232 
+\f5\b INFO: Employee [empno=7370, name=APPLES, job=MANAGER, deptno=10]
+\f1\b0 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 7.4. Querying using Spring Data GemFire\
+\pard\pardeftab720\sa320
+
+\b0\fs30 \cf0 Spring Data GemFire brings the full power of the Spring framework to your GemFire applications. In these two examples we use Spring Data GemFireTemplate as well as Spring Data Repositories backed by GemFire. For more information see the link below.\uc0\u8232 \u8232 {\field{\*\fldinst{HYPERLINK "http://projects.spring.io/spring-data-gemfire/"}}{\fldrslt \cf2 http://projects.spring.io/spring-data-gemfire/ }}\uc0\u8232 \u8232 \ul Spring Data GemFire Template\ulnone \uc0\u8232 \u8232 7.4.1. Open the java class "
+\b TestGemFireTemplate.java
+\b0 " in the package "
+\b io.pivotal.app.test
+\b0 ".\uc0\u8232 \u8232 The java code here is as follows.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 package io.pivotal.app.test;\uc0\u8232 \u8232 import java.util.Collection;\u8232 \u8232 import org.springframework.context.ConfigurableApplicationContext;\u8232 import org.springframework.context.support.ClassPathXmlApplicationContext;\u8232 import org.springframework.data.gemfire.GemfireTemplate;\u8232 \u8232 import io.pivotal.app.domain.Employee;\u8232 \u8232 import com.gemstone.gemfire.cache.Region;\u8232 import com.gemstone.gemfire.cache.query.SelectResults;\u8232 \u8232 public class TestGemFireTemplate \u8232 \{\u8232 \u8232 \'a0\'a0\'a0 private ConfigurableApplicationContext ctx = null;\u8232 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 public TestGemFireTemplate() \u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 ctx = new ClassPathXmlApplicationContext("application-context.xml");\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void run ()\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 @SuppressWarnings("unchecked")\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 GemfireTemplate empTemplate = new GemfireTemplate((Region) ctx.getBean("employees"));\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 System.out.println("-> template.query() test \\n ");\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 SelectResults<?> results = empTemplate.query("deptno = 40");\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 Collection<Employee> emps = (Collection<Employee>) results.asList();\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 for (Employee e: emps)\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \'a0\'a0\'a0 System.out.println(e.toString());\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 System.out.println("\\n-> template.get(key) test \\n ");\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 Employee emp = empTemplate.get("7373");\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 System.out.println(emp.toString());\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 System.out.println("\\n-> template.find() test \\n ");\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 SelectResults<Employee> clerkEmpResults = \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \'a0\'a0\'a0 \'a0\'a0\'a0 empTemplate.find("SELECT * from /employees WHERE job=$1", "CLERK");\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 Collection<Employee> clerkEmps = (Collection<Employee>) clerkEmpResults.asList();\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 for (Employee e: clerkEmps)\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \'a0\'a0\'a0 System.out.println(e.toString());\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \} \u8232 \'a0\'a0\'a0 \}\u8232 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 public static void main(String[] args) \u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 // TODO Auto-generated method stub\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 TestGemFireTemplate test = new TestGemFireTemplate();\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 System.out.println("\\nStarting Spring Data GemFire Template Test.... \\n");\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 test.run();\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 System.out.println("\\nAll done.... ");\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 \}\u8232 \}
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 7.4.2. Run the java class and verify output as follows.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 Starting Spring Data GemFire Template Test.... \uc0\u8232 \u8232 -> template.query() test \u8232 \'a0\u8232 
+\f5\b Employee [empno=7380, name=BLACK, job=CLERK, deptno=40]\uc0\u8232 Employee [empno=7381, name=BROWN, job=SALESMAN, deptno=40]\u8232 Employee [empno=7373, name=SIENA, job=CLERK, deptno=40]
+\f3\b0 \uc0\u8232 \u8232 -> template.get(key) test \u8232 \'a0\u8232 
+\f5\b Employee [empno=7373, name=SIENA, job=CLERK, deptno=40]
+\f3\b0 \uc0\u8232 \u8232 -> template.find() test \u8232 \'a0\u8232 
+\f5\b Employee [empno=7373, name=SIENA, job=CLERK, deptno=40]\uc0\u8232 Employee [empno=7379, name=FRANK, job=CLERK, deptno=10]\u8232 Employee [empno=7376, name=ADRIAN, job=CLERK, deptno=20]\u8232 Employee [empno=7369, name=SMITH, job=CLERK, deptno=20]\u8232 Employee [empno=7380, name=BLACK, job=CLERK, deptno=40]\u8232 Employee [empno=7377, name=ADAM, job=CLERK, deptno=20]\u8232 Employee [empno=7375, name=ROB, job=CLERK, deptno=30]
+\f3\b0 \uc0\u8232 \u8232 All done....
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\fs30 \cf0 \uc0\u8232 \ul Spring Data GemFire Repository\ulnone \uc0\u8232 \u8232 Spring Data GemFire provides support to use the Spring Data repository abstraction to easily persist entities into GemFire and execute queries.7.4.3.\u8232 \u8232 7.4.3. Open the java interface "
+\b DepRepository.java
+\b0 " and "
+\b EmpRepository.java
+\b0 " in the package "
+\b io.pivotal.app.repos
+\b0 ".\uc0\u8232 \u8232 The java code here is as follows.\u8232 \u8232 
+\b \ul DeptRepository.java
+\b0\fs26 \ulnone \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 package io.pivotal.app..repos;\uc0\u8232 \u8232 import java.util.Collection;\u8232 \u8232 import org.springframework.data.gemfire.repository.Query;\u8232 import org.springframework.data.repository.CrudRepository;\u8232 \u8232 import io.pivotal.app.domain.Department;\u8232 \u8232 public interface DeptRepository extends CrudRepository<Department, String> \u8232 \{\u8232 \'a0\'a0\'a0 Department findByName(String name);\u8232 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 @Query("SELECT * FROM /departments")\u8232 \'a0\'a0\'a0 Collection<Department> myFindAll();\u8232 \}
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\b\fs30 EmpRepository.java
+\b0\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 package io.pivotal.app..repos;\uc0\u8232 \u8232 import java.util.Collection;\u8232 \u8232 import org.springframework.data.gemfire.repository.Query;\u8232 import org.springframework.data.repository.CrudRepository;\u8232 \u8232 import io.pivotal.app.domain.Employee;\u8232 \u8232 public interface EmpRepository extends CrudRepository<Employee, String>\u8232 \{\u8232 \'a0\'a0\'a0 @Query("SELECT * FROM /employees where deptno = $1")\u8232 \'a0\'a0\'a0 Collection<Employee> empsInDeptno(int deptno);\u8232 \'a0\'a0\'a0 \u8232 \}
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 7.4.4. The repository interfaces are automatically created as implemenation classes by Spring Data using the config file "
+\b application-context.xml
+\b0 " shown below.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 <?xml version="1.0" encoding="UTF-8"?>\uc0\u8232 <beans xmlns="http://www.springframework.org/schema/beans"\u8232 \'a0\'a0\'a0 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\u8232 \'a0\'a0\'a0 xmlns:gfe-data="http://www.springframework.org/schema/data/gemfire"\u8232 \'a0\'a0\'a0 xmlns:gfe="http://www.springframework.org/schema/gemfire"\u8232 \'a0\'a0\'a0 xmlns:util="http://www.springframework.org/schema/util"\u8232 \'a0\'a0\'a0 xsi:schemaLocation="http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire-1.3.xsd\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 http://www.springframework.org/schema/data/gemfire http://www.springframework.org/schema/data/gemfire/spring-data-gemfire-1.3.xsd">\u8232 \u8232 \'a0\'a0\'a0 <gfe:client-cache \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 id="client-cache" \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 cache-xml-location="classpath:client.xml" \u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 pool-name="gfPool"\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 properties-ref="props" />\u8232 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 <gfe:pool id="gfPool" max-connections="10">\u8232 \'a0\'a0\'a0 \'a0\'a0\'a0 <gfe:locator host="localhost" port="10334"/>\u8232 \'a0\'a0\'a0 </gfe:pool>\u8232 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 <gfe:lookup-region id="departments" name="departments" cache-ref="client-cache"/>\u8232 \'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 <gfe:lookup-region id="employees" name="employees" cache-ref="client-cache"/>\u8232 \'a0\'a0 \'a0\'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 
+\f5\b <gfe-data:repositories base-package="io.pivotal.app..repos"\'a0 />
+\f3\b0 \uc0\u8232 \'a0\'a0 \'a0\'a0\'a0 \u8232 \'a0\'a0\'a0 <util:properties id="props" location="classpath:gemfire.properties"/>\u8232 \'a0\'a0 \'a0\'a0\'a0 \u8232 </beans>
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 \u8232 
+\fs30 7.4.5. Test these two repositories by running the class "
+\b TestRepository.java
+\b0 " in the package "
+\b io.pivotal.app.test
+\b0 ". Verify output as follows.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf3 Starting Spring Data GemFire Respository Tests.... \uc0\u8232 \u8232 ** Size of dept repository **\u8232 
+\f5\b Size = 4
+\f3\b0 \uc0\u8232 \u8232 ** calling\'a0 deptRepos.findOne("20") **\u8232 Department [deptno=20, name=RESEARCH]\u8232 \u8232 ** All Departments using -> deptRepos.findAll()\u8232 Collection<Department> findAll(); ** \u8232 
+\f5\b Department [deptno=30, name=SALES]\uc0\u8232 Department [deptno=10, name=ACCOUNTING]\u8232 Department [deptno=40, name=OPERATIONS]\u8232 Department [deptno=20, name=RESEARCH]
+\f3\b0 \uc0\u8232 \u8232 ** Size of emp repository **\u8232 Size = 13\u8232 \u8232 \'a0** All Employees in dept 40 using -> Collection<Employee> empsInDeptno(int deptno) **\u8232 
+\f5\b Employee [empno=7373, name=SIENA, job=CLERK, deptno=40]\uc0\u8232 Employee [empno=7380, name=BLACK, job=CLERK, deptno=40]\u8232 Employee [empno=7381, name=BROWN, job=SALESMAN, deptno=40]
+\f3\b0 \uc0\u8232 \u8232 All done....
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 7.5. Query with GFSH\
+\pard\pardeftab720\sa320
+
+\b0\fs30 \cf0 7.5.1 Connect to the cluster and query it as shown below.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf3 [pivotal@localhost gemfire]$ gfsh\
+    _________________________     __\
+   / _____/ ______/ ______/ /____/ /\
+  / /  __/ /___  /_____  / _____  /\
+ / /__/ / ____/  _____/ / /    / /\
+/______/_/      /______/_/    /_/    v8.1.0\
+\
+Monitor and Manage GemFire\
+gfsh>connect --locator=localhost[10334]\
+Connecting to Locator at [host=localhost, port=10334] ..\
+Connecting to Manager at [host=10.63.213.185, port=1099] ..\
+Successfully connected to: [host=10.63.213.185, port=1099]\
+gfsh>\uc0\u8232 \u8232 gfsh>
+\f5\b query --query="select * from /employees where deptno = 10";
+\f3\b0 \uc0\u8232 \u8232 Result\'a0\'a0\'a0\'a0 : true\u8232 startCount : 0\u8232 endCount\'a0\'a0 : 20\u8232 Rows\'a0\'a0\'a0\'a0\'a0\'a0 : 4\u8232 \u8232 empno | deptno |\'a0\'a0 name\'a0\'a0 | job\u8232 ----- | ------ | -------- | --------\u8232 7370\'a0 | 10\'a0\'a0\'a0\'a0 | APPLES\'a0\'a0 | MANAGER\u8232 7371\'a0 | 10\'a0\'a0\'a0\'a0 | APICELLA | SALESMAN\u8232 7374\'a0 | 10\'a0\'a0\'a0\'a0 | LUCAS\'a0\'a0\'a0 | SALESMAN\u8232 7379\'a0 | 10\'a0\'a0\'a0\'a0 | FRANK\'a0\'a0\'a0 | CLERK\u8232 \u8232 NEXT_STEP_NAME : END
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 8. Start Pulse (Monitoring Web Console)\
+\pard\pardeftab720
+
+\b0\fs30 \cf0 GemFire Pulse is a Web Application that provides a graphical dashboard for monitoring vital, real-time health and performance of GemFire clusters, members, and regions.
+\fs26 \
+\pard\pardeftab720\sa266
+
+\fs30 \cf0 Use Pulse to examine total memory, CPU, and disk space used by members, uptime statistics, client connections, WAN connections, and critical notifications. Pulse communicates with a GemFire JMX manager to provide a complete view of your GemFire deployment. You can drill down from a high-level cluster view to examine individual members and even regions within a member, to filter the type of information and level of detail.
+\fs26 \
+
+\fs30 By default, GemFire Pulse runs in a Tomcat server container that is embedded in a GemFire JMX manager node. You can optionally deploy Pulse to a Web application server of your choice, so that the tool runs independently of your GemFire clusters. Hosting Pulse on an application server also enables you to use SSL for accessing the application.
+\fs26 \
+\pard\pardeftab720\sa320
+
+\fs30 \cf0 8.1. Connect to the cluster as shown below.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b connect --locator=localhost[10334];
+\f3\b0 \uc0\u8232 Connecting to Locator at [host=localhost, port=10334] ..\u8232 Connecting to Manager at [host=192-168-1-5.tpgi.com.au, port=1099] ..\u8232 Successfully connected to: [host=192-168-1-5.tpgi.com.au, port=1099]
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 8.2. Start pulse and it should invoke a browser for you, if not then use the URL provided in the output.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b start pulse;
+\f3\b0 \uc0\u8232 Running GemFire Pulse Pulse URL : http://192.168.1.5:8083/pulse/
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 \u8232 \u8232 8.3. Connect using a username = admin and password = admin. Once connected your taken to the main page as shown below.\u8232 \u8232 \u8232 \u8232 8.4. Click on Data View to view all regions.\u8232 \u8232 \u8232 \
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 9. Start JConsole (Graphical Monitoring Tool for Java)\
+\pard\pardeftab720
+
+\b0\fs26 \cf0 You can browse all the GemFire MBeans in your distributed system by using JConsole. To view GemFire MBeans through JConsole, perform the following steps:\
+\'a0\
+\pard\pardeftab720\sa320
+\cf0 9.1. Connect to the cluster as shown below.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b connect --locator=localhost[10334];
+\f3\b0 \uc0\u8232 Connecting to Locator at [host=localhost, port=10334] ..\u8232 Connecting to Manager at [host=192-168-1-5.tpgi.com.au, port=1099] ..\u8232 Successfully connected to: [host=192-168-1-5.tpgi.com.au, port=1099]
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 9.2. Start JConsole as shown below.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b start jconsole;
+\f3\b0 \uc0\u8232 Running JDK JConsole
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 \cf9 Note: You may be prompted to connect using insecure connection, that is fine as we have not enabled security so do that as requested.\cf0 \uc0\u8232 \u8232 \
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 10. Create an Index\
+\pard\pardeftab720\sa320
+
+\b0\fs26 \cf0 The GemFire 
+\f3 QueryService
+\f1  API provides methods to create, list and remove the index. You can also use 
+\f3 gfsh
+\f1  command-line interface to create, list and remove indexes, and use cache.xml to create an index. In the example below we use GFSH to create an index on the "
+\b /employees
+\b0 " region.\uc0\u8232 \u8232 10.1. Connect to the cluster as shown below.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b connect --locator=localhost[10334];
+\f3\b0 \uc0\u8232 Connecting to Locator at [host=localhost, port=10334] ..\u8232 Connecting to Manager at [host=192-168-1-5.tpgi.com.au, port=1099] ..\u8232 Successfully connected to: [host=192-168-1-5.tpgi.com.au, port=1099]
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 10.2. List what indexes we have in place right now, there should be none\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b list indexes;
+\f3\b0 \uc0\u8232 No Indexes Found
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 10.3. Create an index as follows then list the indexes.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf0 gfsh>
+\f5\b create index --name=employees_deptno_idx --expression=deptno --region=/employees;
+\f3\b0 \uc0\u8232 Index successfully created with following details\u8232 Name\'a0\'a0\'a0\'a0\'a0\'a0 : employees_deptno_idx\u8232 Expression : deptno\u8232 RegionPath : /employees\u8232 Members which contain the index\u8232 1. 192-168-1-5.tpgi.com.au(server1:40613)<v1>:60749\u8232 2. 192-168-1-5.tpgi.com.au(server2:40617)<v2>:24120\u8232 \u8232 gfsh>
+\f5\b list indexes;
+\f3\b0 \uc0\u8232 Member Name |\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 Member ID\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | Region Path |\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 Name\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | Type\'a0 | Indexed Expression | From Clause\u8232 ----------- | ------------------------------------------------ | ----------- | -------------------- | ----- | ------------------ | -----------\u8232 server1\'a0\'a0\'a0\'a0 | 192-168-1-5.tpgi.com.au(server1:40613)<v1>:60749 | /employees\'a0 | employees_deptno_idx | RANGE | deptno\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | /employees\u8232 server2\'a0\'a0\'a0\'a0 | 192-168-1-5.tpgi.com.au(server2:40617)<v2>:24120 | /employees\'a0 | employees_deptno_idx | RANGE | deptno\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | /employees
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 \cf9 Note: Indexes will always exist in memory and need to be considered when sizing the cluster in terms of memory avaiablity in the system.\cf0 \
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 11. Functions\
+\pard\pardeftab720
+
+\b0\fs30 \cf0 Using the GemFire
+\fs26  function execution service, you can execute application functions on a single server member, in parallel on a subset of server members, or in parallel on all server members of a distributed system.\
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 11.1. Creating the function\
+\pard\pardeftab720\sa320
+
+\b0\fs30 \cf0 11.1.1. Open the java class "
+\b SizeFunction.java
+\b0 " in the package "
+\b io.pivotal.app..functions
+\b0 ".\uc0\u8232 \u8232 The java code here is as follows.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 package io.pivotal.app..functions;\uc0\u8232 \u8232 import java.util.Properties;\u8232 \u8232 import com.gemstone.gemfire.cache.CacheFactory;\u8232 import com.gemstone.gemfire.cache.Declarable;\u8232 import com.gemstone.gemfire.cache.GemFireCache;\u8232 import com.gemstone.gemfire.cache.Region;\u8232 import com.gemstone.gemfire.cache.execute.FunctionAdapter;\u8232 import com.gemstone.gemfire.cache.execute.FunctionContext;\u8232 \u8232 public class SizeFunction extends FunctionAdapter implements Declarable\u8232 \{\u8232 \'a0\'a0\'a0 private static final long serialVersionUID = 1L;\u8232 \u8232 \'a0\'a0\'a0 public static final String ID = "size-function";\u8232 \u8232 \'a0\'a0\'a0 private GemFireCache cache;\u8232 \u8232 \'a0\'a0\'a0 public SizeFunction()\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 this.cache = CacheFactory.getAnyInstance();\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void execute(FunctionContext context)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 String regionName = (String) context.getArguments();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Region region = this.cache.getRegion(regionName);\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.println("Getting size of region " + region.getFullPath());\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 context.getResultSender().lastResult(region.size());\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public String getId()\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return ID;\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void init(Properties properties)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0 \}\u8232 \}
+\f1 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 11.2. Deploying to the GemFire Distributed system\
+\pard\pardeftab720\sa320
+
+\b0\fs26 \cf0 We are going to dynamically deploy this function to the cluster using GFSH. GFSH will automatically register functions in the system from what it finds in the JAR files we upload.\uc0\u8232 \u8232 11.2.1 Connect to the cluster as shown below.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b connect --locator=localhost[10334];
+\f3\b0 \uc0\u8232 Connecting to Locator at [host=localhost, port=10334] ..\u8232 Connecting to Manager at [host=192-168-1-5.tpgi.com.au, port=1099] ..\u8232 Successfully connected to: [host=192-168-1-5.tpgi.com.au, port=1099]
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 11.2.2. Deploy the "
+\b functions.jar
+\b0 " file in the directory \'93
+\b /home/pivotal/Pivotal/SPLabs/gemfire/resources
+\b0 \'93. You will need to use the directory you have installed this workshop in.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b deploy --jar=/home/pivotal/Pivotal/SPLabs/gemfire/resources/functions.jar
+\f3\b0 \uc0\u8232 Member\'a0 | Deployed JAR\'a0 | Deployed JAR Location\u8232 ------- | ------------- | ----------------------------------------------------------------------------------\u8232 server1 | functions.jar | /Users/wwilliams/vmware/ant-demos/gemfire/70/workshop/deploy/vf.gf#functions.jar#1\u8232 server2 | functions.jar | /Users/wwilliams/vmware/ant-demos/gemfire/70/workshop/deploy/vf.gf#functions.jar#1
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 5.4. You can view deployed JAR files as follows\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b list functions
+\f3\b0 \uc0\u8232 Member\'a0 | Function\u8232 ------- | -------------\u8232 server1 | size-function\u8232 server2 | size-function
+\f1 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa360
+
+\b\fs36 \cf0 11.3. Executing the function from a client\
+\pard\pardeftab720\sa320
+
+\b0\fs26 \cf0 11.3.1. Open the java class "
+\b ExecuteSizeFunction.java
+\b0 " in the package "
+\b io.pivotal.app..functions
+\b0 ".\uc0\u8232 \u8232 The java code here is as follows.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 package io.pivotal.app.functions;\uc0\u8232 \u8232 import java.util.List;\u8232 import java.util.logging.Level;\u8232 import java.util.logging.Logger;\u8232 \u8232 import com.gemstone.gemfire.cache.client.ClientCache;\u8232 import com.gemstone.gemfire.cache.client.ClientCacheFactory;\u8232 import com.gemstone.gemfire.cache.execute.Execution;\u8232 import com.gemstone.gemfire.cache.execute.FunctionService;\u8232 import com.gemstone.gemfire.cache.execute.ResultCollector;\u8232 \u8232 public class ExecuteSizeFunction\u8232 \{\u8232 \'a0\'a0\'a0 private Logger logger = Logger.getLogger(this.getClass().getSimpleName());\u8232 \'a0\'a0\'a0 private ClientCache cache = null;\u8232 \u8232 \'a0\'a0\'a0 public ExecuteSizeFunction()\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ClientCacheFactory ccf = new ClientCacheFactory();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ccf.set("cache-xml-file", "query-client.xml");\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 cache = ccf.create();\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void run(String regionName)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Execution execution = FunctionService.onServer(this.cache).withArgs("/" + regionName);\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ResultCollector collector = execution.execute(SizeFunction.ID);\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 logger.log (Level.INFO,\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 String.format("Region %s contains %s entries",\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 "/" + regionName, ((List) collector.getResult()).get(0)));\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public static void main(String[] args)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 ExecuteSizeFunction test = new ExecuteSizeFunction();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 test.run("employees");\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 test.run("departments");\u8232 \'a0\'a0\'a0 \}\u8232 \}
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 11.3.2. Run the Java Class and verify output as follows.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 Jan 19, 2015 9:03:12 AM io.pivotal.app. functions.ExecuteSizeFunction run\uc0\u8232 
+\f5\b INFO: Region /employees contains 13 entries
+\f3\b0 \uc0\u8232 Jan 19, 2015 9:03:12 AM io.pivotal.app.functions.ExecuteSizeFunction run\u8232 
+\f5\b INFO: Region /departments contains 4 entries
+\f1\b0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 12. Verify Data Member Locations\
+\pard\pardeftab720\sa320
+
+\b0\fs26 \cf0 12.1. Open the java class "
+\b VerifyDataLocations.java
+\b0 " in the package "
+\b io.pivotal.app..functions
+\b0 ".\uc0\u8232 \u8232 The java code here is as follows.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 package io.pivotal.app.;\uc0\u8232 \u8232 import java.util.Map;\u8232 import java.util.Set;\u8232 \u8232 import com.gemstone.gemfire.cache.Cache;\u8232 import com.gemstone.gemfire.cache.CacheFactory;\u8232 import com.gemstone.gemfire.cache.Region;\u8232 import com.gemstone.gemfire.cache.partition.PartitionRegionHelper;\u8232 import com.gemstone.gemfire.distributed.DistributedMember;\u8232 import io.pivotal.app.domain.Employee;\u8232 \u8232 public class VerifyDataLocations\u8232 \{\u8232 \'a0\'a0\'a0 private Cache cache = null;\u8232 \u8232 \'a0\'a0\'a0 public VerifyDataLocations()\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 CacheFactory cf = new CacheFactory();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 cf.set("cache-xml-file", "datalocations-cache-no-storage.xml");\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 cf.set("locators", "localhost[10334]");\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 cache = cf.create();\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void run() throws InterruptedException\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Region<String,Employee> exampleRegion = cache.getRegion("employees");\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.println("Employees region size = " + exampleRegion.size());\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Set<Map.Entry<String, Employee>> entries = exampleRegion.entrySet();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (Map.Entry entry: entries)\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 DistributedMember member =\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 PartitionRegionHelper.getPrimaryMemberForKey(exampleRegion, (String) entry.getKey());\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.println\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 (String.format("\\"Primary Member [Host=%s, Id=%s - Key=%s, Value=%s]",\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 member.getHost(), member.getId(), entry.getKey(), entry.getValue()));\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 cache.close();\u8232 \u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 /**\u8232 \'a0\'a0\'a0\'a0 * @param args\u8232 \'a0\'a0\'a0\'a0 * @throws InterruptedException\u8232 \'a0\'a0\'a0\'a0 */\u8232 \'a0\'a0\'a0 public static void main(String[] args) throws InterruptedException\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // TODO Auto-generated method stub\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 VerifyDataLocations test = new VerifyDataLocations();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 test.run();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.exit(1);\u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \}
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 12.2. In oder to view where data exists on each server for a partioned region we must connet as a PEER member and this member we specify won't be storing any region data as shown below.\u8232 \u8232 \ul datalocations-cache-no-storage.xml\ulnone \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 <?xml version="1.0"?>\uc0\u8232 <!DOCTYPE cache PUBLIC\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 "-//GemStone Systems, Inc.//GemFire Declarative Caching 7.0//EN"\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 "http://www.gemstone.com/dtd/cache7_0.dtd">\u8232 \u8232 <cache>\u8232 \'a0\'a0\'a0 <cache-server port="0" />\u8232 \u8232 \'a0\'a0\'a0 <pdx read-serialized="true">\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 <pdx-serializer>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <class-name>com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer</class-name>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <parameter name="classes">\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <string>io\\.pivotal\\.app\\.domain\\..*</string>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 </parameter>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 </pdx-serializer>\u8232 \'a0\'a0\'a0 </pdx>\u8232 \u8232 \'a0\'a0\'a0 <region name="employees" >\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 <region-attributes data-policy="partition" >\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <partition-attributes 
+\f5\b local-max-memory="0"
+\f3\b0  redundant-copies="1" total-num-buckets="113"/>\uc0\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <subscription-attributes interest-policy="all"/>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <eviction-attributes>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <lru-heap-percentage action="overflow-to-disk"/>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 </eviction-attributes>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 </region-attributes>\u8232 \'a0\'a0\'a0 </region>\u8232 </cache>
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 12.3. Run the Java Class and verify output as follows.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 Employees region size = 13\uc0\u8232 
+\f5\b "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server1:43541)<v1>:10412 - Key=7369, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=20, empno=7369, job=CLERK, name=SMITH\}]\uc0\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server2:43543)<v2>:35542 - Key=7370, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=10, empno=7370, job=MANAGER, name=APPLES\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server1:43541)<v1>:10412 - Key=7371, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=10, empno=7371, job=SALESMAN, name=APICELLA\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server2:43543)<v2>:35542 - Key=7372, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=30, empno=7372, job=PRESIDENT, name=LUCIA\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server2:43543)<v2>:35542 - Key=7373, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=40, empno=7373, job=CLERK, name=SIENA\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server1:43541)<v1>:10412 - Key=7374, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=10, empno=7374, job=SALESMAN, name=LUCAS\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server1:43541)<v1>:10412 - Key=7375, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=30, empno=7375, job=CLERK, name=ROB\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server2:43543)<v2>:35542 - Key=7376, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=20, empno=7376, job=CLERK, name=ADRIAN\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server1:43541)<v1>:10412 - Key=7377, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=20, empno=7377, job=CLERK, name=ADAM\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server2:43543)<v2>:35542 - Key=7378, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=20, empno=7378, job=MANAGER, name=SALLY\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server1:43541)<v1>:10412 - Key=7379, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=10, empno=7379, job=CLERK, name=FRANK\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server2:43543)<v2>:35542 - Key=7380, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=40, empno=7380, job=CLERK, name=BLACK\}]\u8232 "Primary Member [Host=192-168-1-5.tpgi.com.au, Id=192-168-1-5.tpgi.com.au(server1:43541)<v1>:10412 - Key=7381, Value=PDX[2,io.pivotal.app.domain.Employee]\{deptno=40, empno=7381, job=SALESMAN, name=BROWN\}]
+\f3\b0 \uc0\u8232 \u8232 Process finished with exit code 1
+\f1 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 13. Add a New Member\
+\pard\pardeftab720\sa320
+
+\b0\fs26 \cf0 In the following section we show how we would add a third server to our GemFire system. You can dynamically add peers to the system while it is running. The new peers are automatically discovered by the other peers and the client. The new peers automatically receive a copy of any replicated regions they create. However, partitioned regions do not automatically redistribute data to the new peer unless you explicitly instruct\'a0GemFire\'a0to rebalance the partitioned region. \uc0\u8232 \u8232 13.1. Make a new directory in your terminal window where the workshop files exist called "
+\b server3
+\b0 " as shown below.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 [pivotal@localhost gemfire]$ mkdir server3
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 13.2. Copy the gemfire.properties and cache.xml files to "
+\b server3
+\b0 "\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 [pivotal@localhost gemfire]$ 
+\f5\b cp ./server1/gemfire.properties ./server3
+\f3\b0 \uc0\u8232 [pivotal@localhost gemfire]$ 
+\f5\b cp ./server1/cache.xml ./server3
+\f1\b0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 13.3. Edit ./server3/cache.xml to use a different port. You can get GemFire to allocate a port for the cache server to avoid this.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf0 <?xml version="1.0"?>\uc0\u8232 <!DOCTYPE cache PUBLIC\u8232 \'a0\'a0\'a0 "-//GemStone Systems, Inc.//GemFire Declarative Caching 7.0//EN"\u8232 \'a0\'a0\'a0 "http://www.gemstone.com/dtd/cache7_0.dtd">\u8232 \u8232 <cache>\u8232 \'a0\'a0\'a0 
+\f5\b <cache-server port="40003"/>
+\f3\b0 \uc0\u8232 \'a0\'a0\'a0 <pdx read-serialized="true">
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 13.4. Connect to GFSH and start a new cache server member using -rebalance option to move some of the partioned data over to this member.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth33760\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth33560\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf0 gfsh>
+\f5\b connect --locator=localhost[10334]
+\f3\b0 \uc0\u8232 Connecting to Locator at [host=localhost, port=10334] ..\u8232 Connecting to Manager at [host=192-168-1-5.tpgi.com.au, port=1099] ..\u8232 Successfully connected to: [host=192-168-1-5.tpgi.com.au, port=1099]\u8232 \u8232 gfsh>
+\f5\b start server --name=server3 --cache-xml-file=./server3/cache.xml --properties-file=./server3/gemfire.properties --locators=localhost[10334] --dir=server3 --rebalance --J=-Xms512m --J=-Xmx512m
+\f3\b0 \uc0\u8232 Starting a GemFire Server in /home/pivotal/Pivotal/SPLabs/gemfire/server3...\u8232 .......\u8232 Server in home/pivotal/Pivotal/SPLabs/gemfire/server3 on 192-168-1-5.tpgi.com.au[40003] as server3 is currently online.\u8232 Process ID: 51291\u8232 Uptime: 3 seconds\u8232 GemFire Version: 7.0.1.5\u8232 Java Version: 1.7.0_25\u8232 Log File: home/pivotal/Pivotal/SPLabs/gemfire/server3/server3.log\u8232 \'85
+\f1 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 13.5. Finally lets list members / regions to make sure everything is still fine.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh>
+\f5\b list members;
+\f3\b0 \uc0\u8232 \'a0 Name\'a0\'a0 | Id\u8232 -------- | -----------------------------------------------------\u8232 server2\'a0 | 192-168-1-5.tpgi.com.au(server2:51011)<v2>:6798\u8232 server1\'a0 | 192-168-1-5.tpgi.com.au(server1:51009)<v1>:13473\u8232 
+\f5\b server3\'a0 | 192-168-1-5.tpgi.com.au(server3:51291)<v5>:47914
+\f3\b0 \uc0\u8232 locator1 | 192-168-1-5.tpgi.com.au(locator1:51000:locator):64166\u8232 \u8232 gfsh>list regions;\u8232 List of regions\u8232 ---------------\u8232 departments\u8232 employees
+\f1 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 14. Shut down the cluster\
+\pard\pardeftab720\sa320
+
+\b0\fs26 \cf0 To shutdown the cluster we could do it one of two ways. The best way illustarted below. \uc0\u8232 \u8232 \cf9 Note: This will shutdown server3 as well and we won't be using it again as the scripts only expect a server1 and server2.\cf0 \uc0\u8232 \u8232 14.1. Run the script "
+\b stop-clean.sh
+\b0 " as shown below.\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth31100\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth30900\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 [pivotal@localhost gemfire]$ ./stop-clean.sh\
+    _________________________     __\
+   / _____/ ______/ ______/ /____/ /\
+  / /  __/ /___  /_____  / _____  /\
+ / /__/ / ____/  _____/ / /    / /\
+/______/_/      /______/_/    /_/    v8.1.0\
+\
+Monitor and Manage GemFire\
+gfsh>connect --locator=localhost[10334];\
+Connecting to Locator at [host=localhost, port=10334] ..\
+Connecting to Manager at [host=10.63.213.185, port=1099] ..\
+Successfully connected to: [host=10.63.213.185, port=1099]\
+\
+gfsh>shutdown --time-out=60\
+As a lot of data in memory will be lost, including possibly events in queues, do you really want to shutdown the entire distributed system? (Y/n): Y\
+Shutdown is triggered\
+\
+gfsh>stop locator --name=locator1;\
+Stopping Locator running in /home/pivotal/Pivotal/SPLabs/gemfire/locator on localhost.localdomain[10334] as locator1...\
+Process ID: 397722\
+Log File: /home/pivotal/Pivotal/SPLabs/gemfire/locator/locator1.log\
+...\
+\
+No longer connected to 10.63.213.185[1099].\
+\
+No longer connected to 10.63.213.185[1099].\
+gfsh>exit;\
+Exiting...\cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\f1 \cf0 \uc0\u8232 14.2. You could also shutdown each member one by one as follows. The option above is the preferred way.\u8232 \u8232 \ul stopall.sh\ulnone \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat8 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf7 \trbrdrl\brdrs\brdrw20\brdrcf7 \trbrdrb\brdrs\brdrw20\brdrcf7 \trbrdrr\brdrs\brdrw20\brdrcf7 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf7 \clbrdrl\brdrs\brdrw20\brdrcf7 \clbrdrb\brdrs\brdrw20\brdrcf7 \clbrdrr\brdrs\brdrw20\brdrcf7 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 gfsh <<!\uc0\u8232 connect --locator=localhost[10334];\u8232 stop server --name=server1;\u8232 stop server --name=server2;\u8232 stop locator --name=locator1;\u8232 exit;\u8232 !
+\f1 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 15. Asyncronous Event Listener (Write Behind)\
+\pard\pardeftab720\sa320
+
+\b0\fs30 \cf0 An AsyncEventListener receives callbacks for events that change region data. You can use an AsyncEventListener implementation as a write-behind cache event handler to synchronize region updates with a database.\'a0 An AsyncEventListener instance is serviced by its own dedicated thread in which a callback method is invoked. Events that update a region are placed in an internal AsyncEventQueue, and the dedicated thread dispatches a batch of events at a time to the listener implementation.\uc0\u8232 \u8232 You can configure an AsyncEventQueue to be either serial or parallel. A serial queue is deployed to one GemFire member, and it delivers all of a region's events in order to a configured AsyncEventListener implementation. A parallel queue is deployed to multiple GemFire members, and each instance of the queue simultaneously delivers region events to a local AsyncEventListener implementation.\u8232 \u8232 While a parallel queue provides the best throughput for writing events, it provides less control for ordering those events. With a parallel queue, you cannot preserve event ordering for a region as a whole because multiple GemFire servers queue and deliver the region's events at the same time. However, the ordering of events for a given partition (or for a given queue of a distributed region) can be preserved. \u8232 \u8232 Given the GemFire cluster is down we are going to add an Async Event Listener and region using the cache.xml file. We could use GFSH but this shows how we can do it in XML\u8232 \u8232 The code for our Async Event Listener is defined as follows, it simple displays each event to the log file for each server.\u8232 \u8232 
+\b TestAsyncEventListener.java
+\b0  in package "
+\b io.pivotal.listener.
+\b0 "
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf3 package io.pivotal.listener.;\uc0\u8232 \u8232 import java.util.List;\u8232 import java.util.Properties;\u8232 import java.util.logging.Level;\u8232 import java.util.logging.Logger;\u8232 \u8232 import com.gemstone.gemfire.cache.Declarable;\u8232 import com.gemstone.gemfire.cache.asyncqueue.AsyncEvent;\u8232 import com.gemstone.gemfire.cache.asyncqueue.AsyncEventListener;\u8232 import com.gemstone.gemfire.pdx.PdxInstance;\u8232 import io.pivotal.app.domain.Test;\u8232 \u8232 public class TestAsyncEventListener implements AsyncEventListener, Declarable\u8232 \{\u8232 \'a0\'a0\'a0 private Logger logger = Logger.getLogger(this.getClass().getSimpleName());\u8232 \u8232 \'a0\'a0\'a0 public void close() \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // TODO Auto-generated method stub\u8232 \u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public void init(Properties arg0) \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // TODO Auto-generated method stub\u8232 \u8232 \'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0 public boolean processEvents(List<AsyncEvent> entries)\u8232 \'a0\'a0\'a0 \{\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 logger.log (Level.INFO, String.format("TestAsyncEventListener : Size of List<AsyncEvent> = %s", entries.size()));\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 // process the events here, could write to a database etc\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 for (AsyncEvent ge: entries)\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 PdxInstance pdxInstance = (PdxInstance) ge.getDeserializedValue();\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 Test test = (Test) pdxInstance.getObject();\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 System.out.println(test.toString());\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}\u8232 \u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 return true;\u8232 \'a0\'a0\'a0 \}\u8232 \}
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 \u8232 
+\fs30 15.1. Edit "
+\b ./server1/cache.xml
+\b0 " to add the section in bold.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 <?xml version="1.0"?>\uc0\u8232 <!DOCTYPE cache PUBLIC\u8232 \'a0\'a0\'a0 "-//GemStone Systems, Inc.//GemFire Declarative Caching 7.0//EN"\u8232 \'a0\'a0\'a0 "http://www.gemstone.com/dtd/cache7_0.dtd">\u8232 \u8232 <cache>\u8232 
+\f5\b \'a0\'a0\'a0 <async-event-queue id="sampleQueue" batch-size="10" batch-time-interval="20000" parallel="true" dispatcher-threads="5">\uc0\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 <async-event-listener>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <class-name>io.pivotal.listener.TestAsyncEventListener</class-name>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 </async-event-listener>\u8232 \'a0\'a0\'a0 </async-event-queue>
+\f3\b0 \uc0\u8232 \'a0\'a0\'a0 <cache-server port="40001"/>\u8232 \'a0\'a0\'a0 <pdx read-serialized="true">\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 <pdx-serializer>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <class-name>com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer</class-name>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <parameter name="classes">\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <string>io\\.pivotal\\.listener\\.domain\\..*</string>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 </parameter>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 </pdx-serializer>\u8232 \'a0\'a0\'a0 </pdx>\u8232 \u8232 
+\f5\b \'a0\'a0\'a0 <region name="asyncRegion">\uc0\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 <region-attributes data-policy="partition"\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 statistics-enabled="true"\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 concurrency-level="16"\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 async-event-queue-ids="sampleQueue">\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <partition-attributes redundant-copies="1" total-num-buckets="113"/>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 </region-attributes>\u8232 \'a0\'a0\'a0 </region>
+\f3\b0 \uc0\u8232 \'a0\'a0\'a0 ......
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 15.2. Edit "
+\b ./sever2/cache.xml
+\b0 " to add the section in bold
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 <?xml version="1.0"?>\uc0\u8232 <!DOCTYPE cache PUBLIC\u8232 \'a0\'a0\'a0 "-//GemStone Systems, Inc.//GemFire Declarative Caching 7.0//EN"\u8232 \'a0\'a0\'a0 "http://www.gemstone.com/dtd/cache7_0.dtd">\u8232 \u8232 <cache>\u8232 
+\f5\b \'a0\'a0\'a0 <async-event-queue id="sampleQueue" batch-size="10" batch-time-interval="20000" parallel="true" dispatcher-threads="5">\uc0\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 <async-event-listener>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <class-name>io.pivotal.listener.TestAsyncEventListener</class-name>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 </async-event-listener>\u8232 \'a0\'a0\'a0 </async-event-queue>
+\f3\b0 \uc0\u8232 \u8232 \'a0\'a0\'a0 <cache-server port="40002"/>\u8232 \'a0\'a0\'a0 <pdx read-serialized="true">\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 <pdx-serializer>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <class-name>com.gemstone.gemfire.pdx.ReflectionBasedAutoSerializer</class-name>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <parameter name="classes">\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <string>io\\.pivotal\\.listener\\.domain\\..*</string>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 </parameter>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 </pdx-serializer>\u8232 \'a0\'a0\'a0 </pdx>\u8232 \u8232 
+\f5\b \'a0\'a0\'a0 <region name="asyncRegion">\uc0\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 <region-attributes data-policy="partition"\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 statistics-enabled="true"\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 concurrency-level="16"\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 async-event-queue-ids="sampleQueue">\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 <partition-attributes redundant-copies="1" total-num-buckets="113"/>\u8232 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 </region-attributes>\u8232 \'a0\'a0\'a0 </region>
+\f3\b0 \uc0\u8232 \'a0\'a0\'a0 ....
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 15.3. Start the cluster back up as follows
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 [pivotal@localhost gemfire]$ 
+\f5\b ./startall.sh
+\f1\b0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\fs30 \cf0 \uc0\u8232 15.4. Add the dept/emp data as follows
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 [pivotal@localhost gemfire]$ 
+\f5\b ./run.sh
+\f1\b0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\fs30 \cf0 \uc0\u8232 15.5. Run "
+\b verify.sh
+\b0 " to ensure data still exists
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf0 [pivotal@localhost gemfire]$ 
+\f5\b ./verify.sh
+\f1\b0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 At this point we will test out Async Event Listener.\uc0\u8232 \u8232 15.6. Add some data into the region "
+\b /asyncRegion
+\b0 " by saving the data below into a file called 
+\b test-data
+\b0 . This will add 50 entries.\uc0\u8232 \u8232 
+\b \ul test-data
+\b0\fs26 \ulnone \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 put --key=1 --value=('id':1,'name':'test1') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\uc0\u8232 put --key=2 --value=('id':2,'name':'test2') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=3 --value=('id':3,'name':'test3') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=4 --value=('id':4,'name':'test4') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=5 --value=('id':5,'name':'test5') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=6 --value=('id':6,'name':'test6') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=7 --value=('id':7,'name':'test7') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=8 --value=('id':8,'name':'test8') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=9 --value=('id':9,'name':'test9') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=10 --value=('id':10,'name':'test10') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=11 --value=('id':11,'name':'test11') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=12 --value=('id':12,'name':'test12') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=13 --value=('id':13,'name':'test13') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=14 --value=('id':14,'name':'test14') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=15 --value=('id':15,'name':'test15') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=16 --value=('id':16,'name':'test16') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=17 --value=('id':17,'name':'test17') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=18 --value=('id':18,'name':'test18') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=19 --value=('id':19,'name':'test19') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=20 --value=('id':20,'name':'test20') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=21 --value=('id':21,'name':'test21') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=22 --value=('id':22,'name':'test22') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=23 --value=('id':23,'name':'test23') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=24 --value=('id':24,'name':'test24') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=25 --value=('id':25,'name':'test25') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=26 --value=('id':26,'name':'test26') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=27 --value=('id':27,'name':'test27') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=28 --value=('id':28,'name':'test28') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=29 --value=('id':29,'name':'test29') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=30 --value=('id':30,'name':'test30') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=31 --value=('id':31,'name':'test31') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=32 --value=('id':32,'name':'test32') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=33 --value=('id':33,'name':'test33') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=34 --value=('id':34,'name':'test34') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=35 --value=('id':35,'name':'test35') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=36 --value=('id':36,'name':'test36') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=37 --value=('id':37,'name':'test37') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=38 --value=('id':38,'name':'test38') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=39 --value=('id':39,'name':'test39') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=40 --value=('id':40,'name':'test40') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=41 --value=('id':41,'name':'test41') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=42 --value=('id':42,'name':'test42') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=43 --value=('id':43,'name':'test43') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=44 --value=('id':44,'name':'test44') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=45 --value=('id':45,'name':'test45') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=46 --value=('id':46,'name':'test46') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=47 --value=('id':47,'name':'test47') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=48 --value=('id':48,'name':'test48') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=49 --value=('id':49,'name':'test49') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;\u8232 put --key=50 --value=('id':50,'name':'test50') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion;
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\fs30 Add to region as follows. Ensure you give it the correct path to the file test-data you created above.
+\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 [pivotal@localhost gemfire]$ gfsh\uc0\u8232 \'a0\'a0\'a0 _________________________\'a0\'a0\'a0\'a0 __\u8232 \'a0\'a0 / _____/ ______/ ______/ /____/ /\u8232 \'a0 / /\'a0 __/ /___\'a0 /_____\'a0 / _____\'a0 / \u8232 \'a0/ /__/ / ____/\'a0 _____/ / /\'a0\'a0\'a0 / /\'a0 \u8232 /______/_/\'a0\'a0\'a0\'a0\'a0 /______/_/\'a0\'a0\'a0 /_/\'a0\'a0\'a0 v7.0.1.5\u8232 \u8232 Monitor and Manage GemFire\u8232 gfsh>connect --locator=localhost[10334];
+\f1 \cf0 \
+
+\f3 \cf3 Connecting to Locator at [host=localhost, port=10334] ..
+\f1 \cf0 \
+
+\f3 \cf3 Connecting to Manager at [host=localhost, port=1099] ..
+\f1 \cf0 \
+
+\f3 \cf3 Successfully connected to: [host=localhost, port=1099]
+\f1 \cf0 \
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf3 \uc0\u8232 gfsh>
+\f5\b run --file=/home/pivotal/Pivotal/SPLabs/gemfire/data/test-data
+\f3\b0 \uc0\u8232 \u8232 ....\u8232 \u8232 50. Executing - put --key=50 --value=('id':50,'name':'test50') --value-class=io.pivotal.listener.domain.Test --region=asyncRegion\u8232 \u8232 Result\'a0\'a0\'a0\'a0\'a0 : true\u8232 Key Class\'a0\'a0 : java.lang.String\u8232 Key\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 : 50\u8232 Value Class : io.pivotal.listener.domain.Test\u8232 \u8232 Value\u8232 ------\u8232 <NULL>
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+
+\fs30 \cf0 \uc0\u8232 15.7. Open the 2 logs files below and verify output as follows\u8232 \u8232 
+\b \ul ./server1/server1.log
+\b0\fs26 \ulnone \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+
+\f3 \cf3 \uc0\u8232 ...\u8232 \u8232 [info 2015/01/19 15:13:22.163 EST server1 <Pooled Waiting Message Processor 0> tid=0x25] Initializing region _B__AsyncEventQueue__sampleQueue__PARALLEL__GATEWAY__SENDER__QUEUE_78\u8232 Jan 19, 2015 3:13:22 PM io.pivotal.listener.TestAsyncEventListener processEvents\u8232 INFO: TestAsyncEventListener : Size of List<AsyncEvent> = 10\u8232 Test [id=21, name=test21]\u8232 Test [id=23, name=test23]\u8232 Test [id=26, name=test26]\u8232 Test [id=27, name=test27]\u8232 Test [id=29, name=test29]\u8232 Test [id=32, name=test32]\u8232 Test [id=37, name=test37]\u8232 Test [id=35, name=test35]\u8232 Test [id=39, name=test39]\u8232 Test [id=40, name=test40]\u8232 \u8232 ...
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720\sa320
+\cf0 \uc0\u8232 
+\b\fs30 ./server2/server2.log
+\b0\fs26 \
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sa320
+
+\f3 \cf3 \uc0\u8232 ...\u8232 \u8232 [info 2015/01/19 15:13:22.452 EST server2 <Function Execution Processor1> tid=0x46] Initializing region _B__AsyncEventQueue__sampleQueue__PARALLEL__GATEWAY__SENDER__QUEUE_109\u8232 Jan 19, 2015 3:13:42 PM io.pivotal.listener.TestAsyncEventListener processEvents\u8232 INFO: TestAsyncEventListener : Size of List<AsyncEvent> = 5\u8232 Test [id=42, name=test42]\u8232 Test [id=43, name=test43]\u8232 Test [id=45, name=test45]\u8232 Test [id=48, name=test48]\u8232 Test [id=50, name=test50]\u8232 \u8232 ...
+\f1 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+\pard\pardeftab720\sa398
+
+\b\fs48 \cf0 More Information\
+\pard\pardeftab720\sa320
+
+\b0\fs30 \cf0 The following links / guides provide detailed information on how to use Pivotal GemFire\uc0\u8232 \u8232 1. GemFire 8 Documentation\u8232 \u8232 {\field{\*\fldinst{HYPERLINK "http://gemfire.docs.pivotal.io/latest/pdf/pivotal-gemfire-ug.pdf"}}{\fldrslt \cf2 \ul http://gemfire.docs.pivotal.io/latest/pdf/pivotal-gemfire-ug.pdf}}
+\fs26 \
+\pard\pardeftab720\sa133\qc
+\cf0 \cb7 \
+\pard\pardeftab720
+\cf0 \cb1 \'a0\
+\pard\pardeftab720\sa320
+\cf0 \'a0\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trcbpat4 \trwWidth15640\trftsWidth3 \trbrdrt\brdrs\brdrw20\brdrcf0 \trbrdrl\brdrs\brdrw20\brdrcf0 \trbrdrb\brdrs\brdrw20\brdrcf0 \trbrdrr\brdrs\brdrw20\brdrcf0 
+\clvertalc \clshdrawnil \clwWidth15440\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrs\brdrw20\brdrcf0 \clbrdrl\brdrs\brdrw20\brdrcf0 \clbrdrb\brdrs\brdrw20\brdrcf0 \clbrdrr\brdrs\brdrw20\brdrcf0 \clpadt40 \clpadl40 \clpadb40 \clpadr40 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720
+\cf3 \'a0\cf0 \
+\cf3 \uc0\u8232 
+\b Carlos Queiroz
+\b0  [cqueiroz at pivotal.io] is an Adv. Field Engineer at Pivotal Inc\uc0\u8232 \cf0 \cell \lastrow\row
+\pard\pardeftab720
+\cf0 \'a0\
+}
